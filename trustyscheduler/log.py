@@ -4,6 +4,7 @@
 
 import logging
 import os
+import sys
 
 from trustyscheduler.const import proc_title
 
@@ -60,7 +61,8 @@ class ColoredFormatter(logging.Formatter):
         return res
 
 
-def setup_loggers(name, def_level=logging.DEBUG, log_fname=None):
+def setup_loggers(name, def_level=logging.DEBUG, log_fname=None
+                  ) -> tuple[logging.Logger, logging.Logger]:
 
     # Stream Handler
     sh = logging.StreamHandler()
@@ -91,6 +93,34 @@ def setup_loggers(name, def_level=logging.DEBUG, log_fname=None):
         logger_cli.addHandler(sh)
 
     return logger, logger_cli
+
+
+def add_child_logger(
+    main_logger: logging.Logger,
+    child_title: str = "",
+    level: int = logging.DEBUG
+) -> logging.Logger:
+    """Adds child logger to main logger
+
+    Args:
+        main_logger (logging.Logger): Main logger to attach the child logger
+        child_title (str): name of the child logger.
+        level (int, optional): Log level. Defaults to logging.DEBUG.
+
+    Returns:
+        logging.Logger: Logger created or None if child_title is empty.
+    """
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setFormatter(
+        logging.Formatter(
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    )
+    handler.setLevel(level)
+    if len(child_title) > 0:
+        # No handler needed as it will use parent's handler
+        return logging.getLogger(f"{main_logger.name}.{child_title}")
+    else:
+        raise ValueError("Child title is empty, cannot create child logger")
 
 
 # init instances of logger to be used by all other modules

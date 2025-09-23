@@ -17,15 +17,17 @@ DATA = [
 ]
 
 dependencies = [
-    'six>=1.1.0',
+    'six==1.1.0',
     'pyyaml==6.0.2',
     'configparser==7.2.0',
-    'requests<=2.32.4'
+    'requests<=2.32.4',
+    'falcon==4.1.0',
+    'numpy==2.3.3'
 ]
 
 entry_points = {
     "scheduler_server": [
-        "trusty_scheduler = deployer.cli_main:entrypoint"
+        "trusty_scheduler = main:entrypoint"
     ]
 }
 
@@ -41,7 +43,6 @@ setup(
     ],
     keywords="scheduler, rest",
     entry_points=entry_points,
-    url="",
     packages=find_packages(),
     include_package_data=True,
     package_data={
@@ -50,7 +51,8 @@ setup(
     zip_safe=False,
     install_requires=dependencies,
     data_files=DATA,
-    license="",
+    license="MIT",
+    url="https://github.com/savex/trustle_task_challenge",
     description="Code created for trustle task specifically",
     long_description=README
 )

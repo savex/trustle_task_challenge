@@ -2,3 +2,5 @@ six==1.1.0
 requests<=2.32.4
 pyyaml==6.0.2
 configparser==7.2.0
+falcon==4.1.0
+numpy==2.3.3
